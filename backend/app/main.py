@@ -1,0 +1,25 @@
+from fastapi import FastAPI
+from app.database import engine, Base
+from app.routers import (auth_router, users_router, 
+                          tasks_router, transactions_router)
+
+Base.metadata.create_all(bind=engine)
+
+app = FastAPI(
+    title="HomeBase API",
+    description="Task and finance management for home",
+    version="0.1.0"
+)
+
+app.include_router(auth_router)
+app.include_router(users_router)
+app.include_router(tasks_router)
+app.include_router(transactions_router)
+
+@app.get("/")
+def root():
+    return {"message": "HomeBase API is running"}
+
+@app.get("/health")
+def health_check():
+    return {"status": "healthy"}
