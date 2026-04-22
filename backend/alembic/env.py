@@ -7,6 +7,8 @@ from alembic import context
 
 import sys
 import os
+from dotenv import load_dotenv
+
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 from app.database import Base
@@ -45,7 +47,8 @@ def run_migrations_offline() -> None:
     script output.
 
     """
-    url = config.get_main_option("sqlalchemy.url")
+    url = os.environ.get("DATABASE_URL") or config.get_main_option("sqlalchemy.url") or ""
+    config.set_main_option("sqlalchemy.url", url)
     context.configure(
         url=url,
         target_metadata=target_metadata,
