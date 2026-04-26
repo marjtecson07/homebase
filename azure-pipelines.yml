@@ -7,7 +7,7 @@ trigger:
       - backend/**
 
 pool:
-  vmImage: 'ubuntu-latest'
+  name: 'ubuntu-latest'
 
 variables:
   - group: homebase-prod
@@ -15,8 +15,46 @@ variables:
     value: $(Build.BuildId)
 
 stages:
+  - stage: Test
+    displayName: 'Run Tests'
+    jobs:
+      - job: TestJob
+        displayName: 'Test and Lint'
+        steps:
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: '3.11'
+              addToPath: true
+
+          - script: |
+              python -m pip install --upgrade pip
+              pip install -r backend/requirements.txt
+            displayName: 'Install dependencies'
+
+          - script: |
+              cd backend
+              ruff check .
+            displayName: 'Run linter'
+
+          - script: |
+              cd backend
+              pytest --cov=app --cov-report=xml --cov-report=term-missing
+            displayName: 'Run tests'
+            env:
+              DATABASE_URL: "sqlite://"
+              SECRET_KEY: "test-secret-key-for-ci"
+              ALGORITHM: "HS256"
+              ACCESS_TOKEN_EXPIRE_MINUTES: "30"
+
+          - task: PublishCodeCoverageResults@2
+            inputs:
+              summaryFileLocation: 'backend/coverage.xml'
+            displayName: 'Publish coverage report'
+
   - stage: Build
     displayName: 'Build and Push Docker Image'
+    dependsOn: Test
+    condition: succeeded()
     jobs:
       - job: BuildJob
         displayName: 'Build Backend'
