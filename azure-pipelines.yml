@@ -7,7 +7,7 @@ trigger:
       - backend/**
 
 pool:
-  name: 'ubuntu-latest'
+  vmImage: 'ubuntu-latest'
 
 variables:
   - group: homebase-prod
