@@ -1,7 +1,9 @@
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
-from app.models.base import TimestampMixin
+
 from app.database import Base
+from app.models.base import TimestampMixin
+
 
 class Household(Base, TimestampMixin):
     __tablename__ = "households"

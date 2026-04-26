@@ -1,5 +1,7 @@
-from pydantic_settings import BaseSettings
 from typing import List
+
+from pydantic_settings import BaseSettings
+
 
 class Settings(BaseSettings):
     database_url: str = ""
@@ -10,10 +12,10 @@ class Settings(BaseSettings):
 
     @property
     def origins_list(self) -> List[str]:
-        return [origin.strip() 
-                for origin in self.allowed_origins.split(",")]
+        return [origin.strip() for origin in self.allowed_origins.split(",")]
 
     class Config:
         env_file = ".env"
+
 
 settings = Settings()

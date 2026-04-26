@@ -1,13 +1,17 @@
 import enum
-from sqlalchemy import Column, String, Numeric, Boolean, Date, Enum, ForeignKey
+
+from sqlalchemy import Boolean, Column, Date, Enum, ForeignKey, Numeric, String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
-from app.models.base import TimestampMixin
+
 from app.database import Base
+from app.models.base import TimestampMixin
+
 
 class TransactionType(str, enum.Enum):
     income = "income"
     expense = "expense"
+
 
 class Transaction(Base, TimestampMixin):
     __tablename__ = "transactions"
@@ -17,7 +21,9 @@ class Transaction(Base, TimestampMixin):
     type = Column(Enum(TransactionType), nullable=False)
     date = Column(Date, nullable=False)
     is_shared = Column(Boolean, default=False)
-    household_id = Column(UUID(as_uuid=True), ForeignKey("households.id"), nullable=False)
+    household_id = Column(
+        UUID(as_uuid=True), ForeignKey("households.id"), nullable=False
+    )
     category_id = Column(UUID(as_uuid=True), ForeignKey("categories.id"), nullable=True)
     created_by_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
 

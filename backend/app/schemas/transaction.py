@@ -1,8 +1,12 @@
-from pydantic import BaseModel
-from uuid import UUID
-from datetime import datetime, date as date_type
+from datetime import date as date_type
+from datetime import datetime
 from typing import Optional
+from uuid import UUID
+
+from pydantic import BaseModel
+
 from app.models.transaction import TransactionType
+
 
 class TransactionBase(BaseModel):
     description: str
@@ -12,8 +16,10 @@ class TransactionBase(BaseModel):
     is_shared: bool = False
     category_id: Optional[UUID] = None
 
+
 class TransactionCreate(TransactionBase):
     pass
+
 
 class TransactionUpdate(BaseModel):
     description: Optional[str] = None
@@ -22,6 +28,7 @@ class TransactionUpdate(BaseModel):
     date: Optional[date_type] = None
     is_shared: Optional[bool] = None
     category_id: Optional[UUID] = None
+
 
 class TransactionResponse(TransactionBase):
     id: UUID

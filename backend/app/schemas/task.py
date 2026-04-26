@@ -1,8 +1,11 @@
-from pydantic import BaseModel
-from uuid import UUID
-from datetime import datetime, date
+from datetime import date, datetime
 from typing import Optional
-from app.models.task import TaskStatus, TaskPriority
+from uuid import UUID
+
+from pydantic import BaseModel
+
+from app.models.task import TaskPriority, TaskStatus
+
 
 class TaskBase(BaseModel):
     title: str
@@ -15,8 +18,10 @@ class TaskBase(BaseModel):
     category_id: Optional[UUID] = None
     assigned_to_id: Optional[UUID] = None
 
+
 class TaskCreate(TaskBase):
     pass
+
 
 class TaskUpdate(BaseModel):
     title: Optional[str] = None
@@ -28,6 +33,7 @@ class TaskUpdate(BaseModel):
     recurrence_rule: Optional[str] = None
     category_id: Optional[UUID] = None
     assigned_to_id: Optional[UUID] = None
+
 
 class TaskResponse(TaskBase):
     id: UUID
