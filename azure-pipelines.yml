@@ -5,6 +5,7 @@ trigger:
   paths:
     include:
       - backend/**
+      - azure-pipelines.yml
 
 pool:
   vmImage: 'ubuntu-latest'
