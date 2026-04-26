@@ -19,5 +19,13 @@ __pycache__/
 # Build artifacts
 dist/
 build/
-*.egg-info/homebase-logs/
+*.egg-info/
+homebase-logs/
 homebase-logs.zip
+homebase-logs2.zip
+homebase-logs2/
+
+# pytest
+.coverage
+coverage.xml
+htmlcov/
